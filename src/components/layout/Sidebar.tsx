@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signIn, signOut, useSession } from "next-auth/react";
 import {
     HomeIcon,
     CreditCardIcon,
@@ -9,6 +10,7 @@ import {
     Cog6ToothIcon,
     CurrencyDollarIcon,
     UserCircleIcon,
+    ArrowRightStartOnRectangleIcon,
   } from '@heroicons/react/24/outline';
 
 const navItems = [
@@ -22,14 +24,14 @@ const navItems = [
 
 export default function Sidebar() {
     const pathname = usePathname();
+    const {data: session} = useSession()
 
     return (
-        <aside className="flex flex-col justify-between h-screen w-64 bg-gray-900 text-white p-4 fixed">
+      <>
+        {session ? (<aside className="flex flex-col justify-between h-screen w-64 bg-gray-900 text-white p-4 fixed">
           <div>
-            {/* Logo */}
             <div className="mb-10 text-2xl font-bold">Finances<span className="text-teal-400">App</span></div>
     
-            {/* Navigation */}
             <nav className="space-y-2">
               {navItems.map(({ label, href, icon: Icon }) => {
                 const isActive = pathname === href;
@@ -49,8 +51,8 @@ export default function Sidebar() {
           </div>
     
           <div className="space-y-4">
-            <button className="flex items-center gap-2 w-full px-4 py-2 rounded-md bg-gray-800 text-gray-200 hover:bg-gray-700 text-sm">
-              <ArrowTrendingDownIcon className="h-5 w-5" />
+            <button onClick={() => signOut()} className="flex items-center gap-2 w-full px-4 py-2 rounded-md bg-gray-800 text-gray-200 hover:bg-gray-700 text-sm">
+              <ArrowRightStartOnRectangleIcon className="h-5 w-5" />
               Logout
             </button>
     
@@ -62,6 +64,10 @@ export default function Sidebar() {
               </div>
             </div>
           </div>
-        </aside>
+        </aside>)
+      :
+      (<button onClick={() => signIn()}>Sign in</button>)  
+      }
+        </>
       );
     }
