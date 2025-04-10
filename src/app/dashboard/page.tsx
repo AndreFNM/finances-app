@@ -1,5 +1,11 @@
+import DateSelector from "@/components/DateSelector"
+
 export default function Dashboard(){
     return(
-        <h1>Dashboard screen</h1>
+        <div className="min-h-screen bg-gray-600">
+            <header className="py-4 bg-gray-700 shadow-md">
+                <DateSelector />
+            </header>
+        </div>
     )
 }
